@@ -47,7 +47,7 @@ Please open an [issue on GitHub][gh-issues] or post in the [Alfred Forum thread]
 [alfred]: http://www.alfredapp.com/
 [dave-gandy]: http://twitter.com/davegandy
 [deanishe]: http://twitter.com/deanishe
-[demo]: https://github.com/deanishe/alfred-flixsearch/
+[demo]: https://raw.githubusercontent.com/deanishe/alfred-flixsearch/master/demo.gif "Demonstration of Alfred Flixsearch"
 [flixsearch]: https://flixsearch.io/
 [font-awesome-sketch]: https://github.com/sethlilly/Font-Awesome-Symbols-for-Sketch
 [font-awesome]: http://fortawesome.github.io/Font-Awesome/
