@@ -52,11 +52,33 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>728FDBED-0E60-4664-9C9F-5939BA8B9802</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>8DB73187-6677-4204-9C1A-2C9EF0FB3A57</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>65A3F5D8-0CC9-4972-8BFB-E10E203CED8A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>9B4FF112-6A11-456A-B0D6-564D59AAE7F8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>342AACD1-6A12-47A6-9214-C69521696495</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -142,43 +164,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>keyword</key>
-				<string>flixconf</string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Loading config…</string>
-				<key>script</key>
-				<string>/usr/bin/python flix.py config "{query}"</string>
-				<key>subtext</key>
-				<string>Configure active countries and other options</string>
-				<key>title</key>
-				<string>Flixsearch Configuration</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>342AACD1-6A12-47A6-9214-C69521696495</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>plusspaces</key>
 				<false/>
 				<key>url</key>
@@ -213,6 +198,41 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading config…</string>
+				<key>script</key>
+				<string>/usr/bin/python flix.py config "{query}"</string>
+				<key>subtext</key>
+				<string>Configure active countries and other options</string>
+				<key>title</key>
+				<string>Flixsearch Configuration</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>342AACD1-6A12-47A6-9214-C69521696495</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>plusspaces</key>
 				<false/>
 				<key>url</key>
@@ -230,23 +250,72 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>output</key>
-				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>title</key>
-				<string>{query}</string>
+				<key>triggerid</key>
+				<string>config</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.trigger.external</string>
 			<key>uid</key>
-			<string>97BD5395-1B42-4559-8E36-06A23C96BF77</string>
+			<string>9B4FF112-6A11-456A-B0D6-564D59AAE7F8</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>flixconf</string>
+				<key>subtext</key>
+				<string>↩ to choose countries, view help and check for updates</string>
+				<key>text</key>
+				<string>FlixSearch Configuration</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>728FDBED-0E60-4664-9C9F-5939BA8B9802</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to run trigger "config" in workflow "net.deanishe.alfred-flixsearch"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>/usr/bin/python flix.py {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>AAB37850-BBF1-435B-B4B1-71893CC99504</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -288,19 +357,23 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>escaping</key>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
 				<integer>0</integer>
-				<key>script</key>
-				<string>/usr/bin/python flix.py {query}</string>
-				<key>type</key>
-				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>title</key>
+				<string>{query}</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>AAB37850-BBF1-435B-B4B1-71893CC99504</string>
+			<string>97BD5395-1B42-4559-8E36-06A23C96BF77</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -330,7 +403,7 @@
 		<key>342AACD1-6A12-47A6-9214-C69521696495</key>
 		<dict>
 			<key>ypos</key>
-			<real>130</real>
+			<real>370</real>
 		</dict>
 		<key>490747DB-68B7-413C-8AB8-6DEE61EC63B8</key>
 		<dict>
@@ -340,9 +413,19 @@
 		<key>65A3F5D8-0CC9-4972-8BFB-E10E203CED8A</key>
 		<dict>
 			<key>ypos</key>
+			<real>610</real>
+		</dict>
+		<key>728FDBED-0E60-4664-9C9F-5939BA8B9802</key>
+		<dict>
+			<key>ypos</key>
 			<real>490</real>
 		</dict>
 		<key>8DB73187-6677-4204-9C1A-2C9EF0FB3A57</key>
+		<dict>
+			<key>ypos</key>
+			<real>610</real>
+		</dict>
+		<key>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</key>
 		<dict>
 			<key>ypos</key>
 			<real>490</real>
@@ -350,12 +433,17 @@
 		<key>97BD5395-1B42-4559-8E36-06A23C96BF77</key>
 		<dict>
 			<key>ypos</key>
-			<real>490</real>
+			<real>610</real>
+		</dict>
+		<key>9B4FF112-6A11-456A-B0D6-564D59AAE7F8</key>
+		<dict>
+			<key>ypos</key>
+			<real>370</real>
 		</dict>
 		<key>AAB37850-BBF1-435B-B4B1-71893CC99504</key>
 		<dict>
 			<key>ypos</key>
-			<real>490</real>
+			<real>610</real>
 		</dict>
 		<key>CBED245D-643D-4624-BA6C-8FA4827F93D6</key>
 		<dict>

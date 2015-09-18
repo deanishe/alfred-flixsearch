@@ -39,12 +39,7 @@ import time
 from bs4 import BeautifulSoup as BS
 from bs4 import Tag
 from docopt import docopt
-from workflow import (
-    Workflow,
-    web,
-    ICON_WARNING,
-    ICON_BURN,
-)
+from workflow import Workflow, web
 
 USER_AGENT = ('Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 '
               '(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
@@ -75,18 +70,27 @@ COUNTRIES = [
     'USA',
 ]
 
-FLAGS = dict([(c, 'icons/{0}.png'.format(c)) for c in COUNTRIES])
+# FLAGS = dict([(c, 'icons/{0}.png'.format(c)) for c in COUNTRIES])
+FLAGS_ACTIVE = dict([(c, 'icons/{0} Active.png'.format(c))
+                     for c in COUNTRIES])
+FLAGS_INACTIVE = dict([(c, 'icons/{0} Inactive.png'.format(c))
+                       for c in COUNTRIES])
 
-ICON_HELP = 'icons/help.icns'
-ICON_UPDATE_AVAILABLE = 'icons/update-available.icns'
-ICON_UPDATE_NONE = 'icons/update-none.icns'
-ICON_ON = 'icons/toggle_on.icns'
-ICON_OFF = 'icons/toggle_off.icns'
+ICON_BACK = 'icons/Back.png'
+ICON_COUNTRIES = 'icons/Countries.png'
+# ICON_FLAG = 'icons/EU.png'
+ICON_HELP = 'icons/Help.png'
+ICON_OFF = 'icons/Toggle Off.png'
+ICON_ON = 'icons/Toggle On.png'
+ICON_RESET = 'icons/Reset.png'
+ICON_UPDATE_AVAILABLE = 'icons/Update Available.png'
+ICON_UPDATE_NONE = 'icons/Update None.png'
+ICON_WARNING = 'icons/Warning.png'
 
 HELP_URL = 'https://github.com/deanishe/alfred-flixsearch'
 DEFAULT_SETTINGS = {
-    # Activate all countries by default
-    'countries': COUNTRIES
+    # Activate no countries by default
+    'countries': []
 }
 UPDATE_SETTINGS = {
     'github_slug': 'deanishe/alfred-flixsearch'
@@ -160,14 +164,19 @@ def retrieve_flixsearch_url(query):
 
     start = time.time()
     url = 'https://flixsearch.io/search/{0}'.format(query.encode('utf-8'))
+    user_agent = USER_AGENT.format(wf.version)
     log.debug('Retrieving URL `%s` ...', url)
-    headers = {'User-Agent': USER_AGENT}
+    headers = {'User-Agent': user_agent}
+
     r = web.get(url, headers=headers)
+
     r.raise_for_status()
+
     html = r.content
     # log.debug('HTML : %s', html)
     duration = time.time() - start
     log.debug('URL retrieved in %0.3f seconds', duration)
+
     return html
 
 
@@ -274,7 +283,11 @@ def parse_flixsearch_html(html):
 
 
 def flixsearch(query):
-    """Retrieve results from flixsearch.io."""
+    """Retrieve results from flixsearch.io.
+
+    Cache results for an hour.
+
+    """
 
     def _wrapper():
         html = retrieve_flixsearch_url(query)
@@ -300,7 +313,7 @@ class FlixSearch(object):
 
         self.wf = wf
         args = docopt(__doc__, argv=wf.args)
-        log.debug('args : %r', args)
+        # log.debug('args : %r', args)
 
         if args.get('search'):
             return self.do_search(args.get('<query>'))
@@ -318,6 +331,15 @@ class FlixSearch(object):
 
     def do_search(self, query):
         """Search flixsearch.io and display results in Alfred."""
+
+        if not len(self.wf.settings.get('countries', [])):
+            self.wf.add_item(
+                'You must activate some countries before searching',
+                'Enter "flixconf" to activate one or more countries',
+                icon=ICON_WARNING)
+
+            self.wf.send_feedback()
+            return 0
 
         log.debug('Searching flixsearch.io for %r ...', query)
         results = flixsearch(query)
@@ -355,7 +377,7 @@ class FlixSearch(object):
 
         # Call external trigger to re-run workflow
         if query == 'countries':
-            return self._call_countries_trigger()
+            return self._call_external_trigger('countries')
 
         # ---------------------------------------------------------
         # Update
@@ -369,6 +391,13 @@ class FlixSearch(object):
                              icon=ICON_UPDATE_NONE)
 
         # ---------------------------------------------------------
+        # Countries
+        self.wf.add_item('Configure countries…',
+                         '↩ or ⇥ to choose countries to search',
+                         autocomplete='countries',
+                         icon=ICON_COUNTRIES)
+
+        # ---------------------------------------------------------
         # Workflow help
         self.wf.add_item('View help',
                          '↩ or ⇥ to open the help in your browser',
@@ -376,144 +405,155 @@ class FlixSearch(object):
                          icon=ICON_HELP)
 
         # ---------------------------------------------------------
-        # Countries
-        self.wf.add_item('Select countries',
-                         '↩ or ⇥ to choose countries to search',
-                         autocomplete='countries',
-                         icon=FLAGS['UK'])
-
-        # ---------------------------------------------------------
         # Reset
         self.wf.add_item('Reset workflow',
                          '↩ or ⇥ to clear cache and settings',
                          autocomplete='workflow:reset',
-                         icon=ICON_BURN)
+                         icon=ICON_RESET)
 
         self.wf.send_feedback()
         return 0
 
     def do_countries(self, query):
         """Show list of available countries."""
+
+        if query == 'config:goback':
+            return self._call_external_trigger('config')
+
         user_countries = self.wf.settings.get('countries', [])
 
-        if not query:  # Show top-level options
+        all_selected = len(user_countries) == len(COUNTRIES)
+        none_selected = len(user_countries) == 0
 
-            all_selected = len(user_countries) == len(COUNTRIES)
-            none_selected = len(user_countries) == 0
+        # ---------------------------------------------------------
+        # Show general country options
+        if not query:
+            self.wf.add_item('Back to config',
+                             '↩ or ⇥ to go back',
+                             autocomplete='config:goback',
+                             icon=ICON_BACK)
 
             if not all_selected:
-                self.wf.add_item('Select all',
-                                 '↩ to select all countries',
+                self.wf.add_item('Activate all',
+                                 '↩ to activate all countries',
                                  arg='activate ALL',
                                  valid=True,
                                  icon=ICON_ON)
 
             if not none_selected:
-                self.wf.add_item('Deselect all',
-                                 '↩ to deselect all countries',
+                self.wf.add_item('Deactivate all',
+                                 '↩ to deactivate all countries',
                                  arg='deactivate ALL',
                                  valid=True,
                                  icon=ICON_OFF)
 
-            if not none_selected:
-                self.wf.add_item(
-                    'Active countries…',
-                    '↩ or ⇥ to view and deactivate active countries',
-                    autocomplete='active ',
-                    icon=ICON_ON
-                )
-
-            if not all_selected:
-                self.wf.add_item(
-                    'Inactive countries…',
-                    '↩ or ⇥ to view and activate inactive countries',
-                    autocomplete='inactive ',
-                    icon=ICON_OFF
-                )
-
-            self.wf.send_feedback()
-            return 0
-
         # ---------------------------------------------------------
-        # List active or inactive countries
+        # Show available/filtered countries
+        countries = COUNTRIES[:]
 
-        if query.startswith('active'):  # List active countries
-            query = query[6:].strip()
-            log.debug('query : %r', query)
+        # Filter countries on query
+        if query:
+            countries = self.wf.filter(query, countries, min_score=30)
 
-            countries = user_countries[:]
+        if query and not countries:
+            self.wf.add_item('No matching countries',
+                             'Try a different query',
+                             icon=ICON_WARNING)
 
-            if query:
-                countries = self.wf.filter(query, countries, min_score=30)
+        for c in countries:
+            if c in user_countries:
+                icon = FLAGS_ACTIVE[c]
+                cmd = 'deactivate'
+            else:
+                icon = FLAGS_INACTIVE[c]
+                cmd = 'activate'
 
-            for c in sorted(countries):
-                self.wf.add_item(c,
-                                 '↩ to deactivate',
-                                 arg='deactivate {0}'.format(c),
-                                 valid=True,
-                                 icon=FLAGS[c])
+            self.wf.add_item(c,
+                             '↩ to {0} this country'.format(cmd),
+                             arg='{0} "{1}"'.format(cmd, c),
+                             valid=True,
+                             icon=icon)
 
-            self.wf.send_feedback()
-
-        elif query.startswith('inactive'):  # List inactive countries
-            query = query[8:].strip()
-            log.debug('query : %r', query)
-
-            # Inactive countries
-            countries = set(COUNTRIES) - set(user_countries)
-
-            if query:
-                countries = self.wf.filter(query, countries, min_score=30)
-
-            for c in sorted(countries):
-                self.wf.add_item(c,
-                                 '↩ to activate',
-                                 arg='activate {0}'.format(c),
-                                 valid=True,
-                                 icon=FLAGS[c])
-
-            self.wf.send_feedback()
+        self.wf.send_feedback()
 
     def do_deactivate(self, country):
         """Deactivate country and re-open settings."""
 
-        if country == 'ALL':
-            self.wf.settings['countries'] = []
-            msg = 'Deactivated all countries'
-            print(msg)
-            log.debug(msg)
-            self._call_countries_trigger()
-            return 0
+        return self._set_country_status(country, False)
 
-        if country in self.wf.settings['countries']:
-            self.wf.settings['countries'].remove(country)
-            self.wf.settings.save()
-            msg = 'Deactivated {0}'.format(country)
-            log.debug(msg)
-            print(msg)
-            return self._call_countries_trigger('active ')
+        # if country == 'ALL':
+        #     self.wf.settings['countries'] = []
+        #     msg = 'Deactivated all countries'
+        #     print(msg)
+        #     log.debug(msg)
+        #     self._call_external_trigger('countries')
+        #     return 0
+
+        # if country in self.wf.settings['countries']:
+        #     self.wf.settings['countries'].remove(country)
+        #     self.wf.settings.save()
+        #     msg = 'Deactivated {0}'.format(country)
+        #     log.debug(msg)
+        #     print(msg)
+        #     return self._call_external_trigger('countries')
 
     def do_activate(self, country):
         """Activate country and re-open settings."""
 
-        if country == 'ALL':
-            self.wf.settings['countries'] = COUNTRIES[:]
-            msg = 'Activated all countries'
-            print(msg)
-            log.debug(msg)
-            self._call_countries_trigger()
-            return 0
+        return self._set_country_status(country, True)
 
-        if country not in self.wf.settings['countries']:
-            self.wf.settings['countries'].append(country)
-            self.wf.settings.save()
-            msg = 'Activated {0}'.format(country)
-            log.debug(msg)
-            print(msg)
-            return self._call_countries_trigger('inactive ')
+        # if country == 'ALL':
+        #     self.wf.settings['countries'] = COUNTRIES[:]
+        #     msg = 'Activated all countries'
+        #     print(msg)
+        #     log.debug(msg)
+        #     self._call_external_trigger('countries')
+        #     return 0
+
+        # if country not in self.wf.settings['countries']:
+        #     self.wf.settings['countries'].append(country)
+        #     self.wf.settings.save()
+        #     msg = 'Activated {0}'.format(country)
+        #     log.debug(msg)
+        #     print(msg)
+        #     return self._call_external_trigger('countries')
 
     # ---------------------------------------------------------
     # Helpers
+
+    def _set_country_status(self, country, activate=True):
+        """Activate/deactivate country and post notification."""
+
+        action = ('Deactivated', 'Activated')[activate]
+        msg = '{0} {1}'.format(action, country)
+        user_countries = self.wf.settings.get('countries', [])
+        updated = False
+
+        if country == 'ALL':
+            if activate:
+                self.wf.settings['countries'] = COUNTRIES[:]
+                msg = 'Activated all countries'
+                updated = True
+
+            else:
+                self.wf.settings['countries'] = []
+                msg = 'Deactivated all countries'
+                updated = True
+
+        elif activate and country not in user_countries:
+            self.wf.settings['countries'].append(country)
+            updated = True
+
+        elif not activate and country in user_countries:
+            self.wf.settings['countries'].remove(country)
+            updated = True
+
+        if updated:
+            self.wf.settings.save()
+            log.debug(msg)
+            print(msg)
+
+        return self._call_external_trigger('countries')
 
     def _filter_for_countries(self, results):
         """Remove results that don't match user's configured countries."""
@@ -527,26 +567,31 @@ class FlixSearch(object):
 
         return filtered
 
-    def _call_countries_trigger(self, query=None):
-        """Tell Alfred to show countries configuration.
+    def _call_external_trigger(self, trigger, argument=None):
+        """Call Alfred external trigger with argument.
 
         Call external trigger via AppleScript.
 
         """
 
-        script = ('tell application "Alfred 2" to run trigger "countries" '
-                  'in workflow "net.deanishe.alfred-flixsearch"')
+        script = ('tell application "Alfred 2" to run trigger "{0}" '
+                  'in workflow '
+                  '"net.deanishe.alfred-flixsearch"').format(trigger)
 
-        if query:
-            script += ' with argument "{0}"'.format(query)
+        if argument:
+            script += ' with argument "{0}"'.format(argument)
 
         cmd = [b'/usr/bin/osascript', '-e', script.encode('utf-8')]
-        proc = subprocess.call(cmd)
-        proc.wait()
-        if proc.returncode != 0:
+        retcode = subprocess.call(cmd)
+        if retcode != 0:
             raise RuntimeError('Could not call Alfred via AppleScript')
 
         return 0
+
+    # def _applescriptify(self, text):
+    #     """Escape double quotes for AppleScript."""
+
+    #     return text.replace('"', '" & quote & "')
 
 if __name__ == '__main__':
     wf = Workflow(
