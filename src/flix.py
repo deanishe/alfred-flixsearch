@@ -88,7 +88,7 @@ ICON_UPDATE_AVAILABLE = 'icons/Update Available.png'
 ICON_UPDATE_NONE = 'icons/Update None.png'
 ICON_WARNING = 'icons/Warning.png'
 
-HELP_URL = 'https://github.com/deanishe/alfred-flixsearch'
+HELP_URL = 'https://github.com/deanishe/alfred-flixsearch#flixsearch-for-alfred'
 DEFAULT_SETTINGS = {
     # Activate no countries by default
     'countries': []
