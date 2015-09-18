@@ -10,7 +10,7 @@
 
 """flix.py [options] [command] [arg]
 
-Search Flixsearch.io.
+Search FlixSearch.io.
 
 Show which Netflix content is available and where.
 
@@ -41,9 +41,10 @@ from bs4 import Tag
 from docopt import docopt
 from workflow import Workflow, web
 
-USER_AGENT = ('Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
-
+# USER_AGENT = ('Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 '
+#               '(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
+USER_AGENT = ('Alfred-Flixsearch/{0} '
+              '(https://github.com/deanishe/alfred-flixsearch)')
 
 # Countries where Netflix is available (that Flixsearch.io knows about)
 COUNTRIES = [
@@ -523,6 +524,9 @@ class FlixSearch(object):
 
     def _set_country_status(self, country, activate=True):
         """Activate/deactivate country and post notification."""
+
+        if 'countries' not in self.wf.settings:
+            self.wf.settings['countries'] = []
 
         action = ('Deactivated', 'Activated')[activate]
         msg = '{0} {1}'.format(action, country)
