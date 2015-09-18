@@ -291,6 +291,7 @@ def flixsearch(query):
     """
 
     def _wrapper():
+        log.debug('New search for `%s`...', query)
         html = retrieve_flixsearch_url(query)
         results = parse_flixsearch_html(html)
         return results
@@ -342,7 +343,7 @@ class FlixSearch(object):
             self.wf.send_feedback()
             return 0
 
-        log.debug('Searching flixsearch.io for %r ...', query)
+        log.debug('Searching flixsearch.io for `%s` ...', query)
         results = flixsearch(query)
         log.debug('%d total results for `%s`', len(results), query)
         results = self._filter_for_countries(results)
@@ -350,7 +351,7 @@ class FlixSearch(object):
                   len(results), query)
 
         if not results:
-            self.wf.add_item('No results found',
+            self.wf.add_item('No results for "{0}"'.format(query),
                              'Try a different query',
                              icon=ICON_WARNING)
             self.wf.send_feedback()
@@ -482,42 +483,10 @@ class FlixSearch(object):
 
         return self._set_country_status(country, False)
 
-        # if country == 'ALL':
-        #     self.wf.settings['countries'] = []
-        #     msg = 'Deactivated all countries'
-        #     print(msg)
-        #     log.debug(msg)
-        #     self._call_external_trigger('countries')
-        #     return 0
-
-        # if country in self.wf.settings['countries']:
-        #     self.wf.settings['countries'].remove(country)
-        #     self.wf.settings.save()
-        #     msg = 'Deactivated {0}'.format(country)
-        #     log.debug(msg)
-        #     print(msg)
-        #     return self._call_external_trigger('countries')
-
     def do_activate(self, country):
         """Activate country and re-open settings."""
 
         return self._set_country_status(country, True)
-
-        # if country == 'ALL':
-        #     self.wf.settings['countries'] = COUNTRIES[:]
-        #     msg = 'Activated all countries'
-        #     print(msg)
-        #     log.debug(msg)
-        #     self._call_external_trigger('countries')
-        #     return 0
-
-        # if country not in self.wf.settings['countries']:
-        #     self.wf.settings['countries'].append(country)
-        #     self.wf.settings.save()
-        #     msg = 'Activated {0}'.format(country)
-        #     log.debug(msg)
-        #     print(msg)
-        #     return self._call_external_trigger('countries')
 
     # ---------------------------------------------------------
     # Helpers
@@ -592,10 +561,6 @@ class FlixSearch(object):
 
         return 0
 
-    # def _applescriptify(self, text):
-    #     """Escape double quotes for AppleScript."""
-
-    #     return text.replace('"', '" & quote & "')
 
 if __name__ == '__main__':
     wf = Workflow(
