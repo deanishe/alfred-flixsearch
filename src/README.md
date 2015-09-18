@@ -51,10 +51,10 @@ Please open an [issue on GitHub][gh-issues] or post in the [Alfred Forum thread]
 [flixsearch]: https://flixsearch.io/
 [font-awesome-sketch]: https://github.com/sethlilly/Font-Awesome-Symbols-for-Sketch
 [font-awesome]: http://fortawesome.github.io/Font-Awesome/
-[forum]: http://www.alfredforum.com/
+[forum]: http://www.alfredforum.com/topic/7637-flixsearch
 [gh-issues]: https://github.com/deanishe/alfred-flixsearch/issues/
 [gh-releases]: https://github.com/deanishe/alfred-flixsearch/releases/
 [mit-licence]: http://opensource.org/licenses/MIT
-[packal]: http://www.packal.org/
+[packal]: http://www.packal.org/workflow/alfred-flixsearch
 [seth-lilly]: http://twitter.com/sethlilly
 [sil-licence]: http://scripts.sil.org/OFL
