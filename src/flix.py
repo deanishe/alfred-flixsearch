@@ -128,6 +128,22 @@ def unescape(text):
     return re.sub("&#?\w+;", fixup, text)
 
 
+def title_from_url(url):
+    """Guess show/movie title based on URL.
+
+    Args:
+        url (str): Flixsearch.io URL
+
+    Returns:
+        str: Title (or `None`)
+    """
+    s = url.split('/')[-1]
+    s = s.replace('-', ' ').title()
+    if re.match(r'.+\d\d\d\d', s):
+        s = '{} ({})'.format(s[:-4].strip(), s[-4:])
+    return s
+
+
 def flatten(elem, recursive=False):
     """Return the string contents of partial BS elem tree.
 
@@ -222,8 +238,10 @@ def parse_flixsearch_html(html):
         if title_elem:
             title = flatten(title_elem)
         else:
-            log.error('No title found : %r', img_box)
-            continue
+            # Try to extract from URL
+            title = title_from_url(url)
+            # log.error('No title found : %r', img_box)
+            # continue
 
         # Genres & description
         content_box = elem.find('div', 'card-content')

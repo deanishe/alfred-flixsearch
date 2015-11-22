@@ -104,7 +104,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Flixsearch</string>
+	<string>FlixSearch</string>
 	<key>objects</key>
 	<array>
 		<dict>
