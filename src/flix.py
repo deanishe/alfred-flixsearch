@@ -35,6 +35,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib
 
 from bs4 import BeautifulSoup as BS
 from bs4 import Tag
@@ -180,7 +181,8 @@ def retrieve_flixsearch_url(query):
     """
 
     start = time.time()
-    url = 'https://flixsearch.io/search/{0}'.format(query.encode('utf-8'))
+    url = 'https://flixsearch.io/search/{0}'.format(
+        urllib.quote(query.encode('utf-8')))
     user_agent = USER_AGENT.format(wf.version)
     log.debug('Retrieving URL `%s` ...', url)
     headers = {'User-Agent': user_agent}
@@ -208,9 +210,8 @@ def parse_flixsearch_html(html):
     log.debug('%d `card` elems found', len(elems))
 
     for i, elem in enumerate(elems):
-        image = title = description = url = None
+        image = title = url = None
         countries = []
-        genres = []
 
         # ---------------------------------------------------------
         # Parse subelements
@@ -244,21 +245,21 @@ def parse_flixsearch_html(html):
             # continue
 
         # Genres & description
-        content_box = elem.find('div', 'card-content')
-        if not content_box:
-            log.error('No content box found : %r', elem)
-            continue
+        # content_box = elem.find('div', 'card-content')
+        # if not content_box:
+        #     log.error('No content box found : %r', elem)
+        #     continue
 
-        paras = content_box.find_all('p')
-        if len(paras) == 1:  # description only
-            description = paras[0].string
-        elif len(paras) == 2:  # expected results
-            genres = [s.strip() for s in paras[0].string.split(',')]
-            description = paras[1].string
-        else:
-            log.error('Found %d p elements, not 1 or 2 in %r',
-                      len(paras), content_box)
-            continue
+        # paras = content_box.find_all('p')
+        # if len(paras) == 1:  # description only
+        #     description = paras[0].string
+        # elif len(paras) == 2:  # expected results
+        #     genres = [s.strip() for s in paras[0].string.split(',')]
+        #     description = paras[1].string
+        # else:
+        #     log.error('Found %d p elements, not 1 or 2 in %r',
+        #               len(paras), content_box)
+        #     continue
 
         # genres = [s.strip() for s in paras[0].string.split(',')]
         # description = paras[1].string
@@ -283,16 +284,16 @@ def parse_flixsearch_html(html):
         log.debug('Title       : %r', title)
         log.debug('URL         : %r', url)
         log.debug('Image       : %r', image)
-        log.debug('Description : %r', description)
-        log.debug('Genres      : %r', genres)
+        # log.debug('Description : %r', description)
+        # log.debug('Genres      : %r', genres)
         log.debug('Countries   : %r', countries)
         log.debug('-' * 60)
 
         results.append(dict(title=title,
                             url=url,
                             image=image,
-                            description=description,
-                            genres=genres,
+                            # description=description,
+                            # genres=genres,
                             countries=countries))
 
     duration = time.time() - start
@@ -377,13 +378,14 @@ class FlixSearch(object):
 
         for r in results:
             subtitles = {
-                'cmd': ', '.join(r['genres']),
-                'alt': ', '.join(r['countries']),
-                'ctrl': r['url'],
+                # 'cmd': ', '.join(r['genres']),
+                # 'alt': ', '.join(r['countries']),
+                'cmd': r['url'],
             }
             self.wf.add_item(r['title'],
                              # ', '.join(r['genres']),
-                             r['description'],
+                             # r['description'],
+                             ', '.join(r['countries']),
                              modifier_subtitles=subtitles,
                              arg=r['url'],
                              valid=True,

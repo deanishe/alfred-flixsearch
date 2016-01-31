@@ -24,22 +24,6 @@
 				<key>modifiersubtext</key>
 				<string></string>
 			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>EE0D1D91-35B6-483B-BF31-66AF949CAF4D</string>
-				<key>modifiers</key>
-				<integer>524288</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>CBED245D-643D-4624-BA6C-8FA4827F93D6</string>
-				<key>modifiers</key>
-				<integer>262144</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
 		</array>
 		<key>65A3F5D8-0CC9-4972-8BFB-E10E203CED8A</key>
 		<array>
@@ -181,23 +165,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<false/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>EE0D1D91-35B6-483B-BF31-66AF949CAF4D</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>1</integer>
 				<key>escaping</key>
@@ -227,23 +194,6 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>342AACD1-6A12-47A6-9214-C69521696495</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>plusspaces</key>
-				<false/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>CBED245D-643D-4624-BA6C-8FA4827F93D6</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -403,7 +353,7 @@
 		<key>342AACD1-6A12-47A6-9214-C69521696495</key>
 		<dict>
 			<key>ypos</key>
-			<real>370</real>
+			<real>260</real>
 		</dict>
 		<key>490747DB-68B7-413C-8AB8-6DEE61EC63B8</key>
 		<dict>
@@ -413,52 +363,42 @@
 		<key>65A3F5D8-0CC9-4972-8BFB-E10E203CED8A</key>
 		<dict>
 			<key>ypos</key>
-			<real>610</real>
+			<real>500</real>
 		</dict>
 		<key>728FDBED-0E60-4664-9C9F-5939BA8B9802</key>
 		<dict>
 			<key>ypos</key>
-			<real>490</real>
+			<real>380</real>
 		</dict>
 		<key>8DB73187-6677-4204-9C1A-2C9EF0FB3A57</key>
 		<dict>
 			<key>ypos</key>
-			<real>610</real>
+			<real>500</real>
 		</dict>
 		<key>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</key>
 		<dict>
 			<key>ypos</key>
-			<real>490</real>
+			<real>380</real>
 		</dict>
 		<key>97BD5395-1B42-4559-8E36-06A23C96BF77</key>
 		<dict>
 			<key>ypos</key>
-			<real>610</real>
+			<real>500</real>
 		</dict>
 		<key>9B4FF112-6A11-456A-B0D6-564D59AAE7F8</key>
 		<dict>
 			<key>ypos</key>
-			<real>370</real>
+			<real>260</real>
 		</dict>
 		<key>AAB37850-BBF1-435B-B4B1-71893CC99504</key>
 		<dict>
 			<key>ypos</key>
-			<real>610</real>
-		</dict>
-		<key>CBED245D-643D-4624-BA6C-8FA4827F93D6</key>
-		<dict>
-			<key>ypos</key>
-			<real>370</real>
+			<real>500</real>
 		</dict>
 		<key>D0B840AB-D8B8-4F26-BABD-6855B855C8D3</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
-		</dict>
-		<key>EE0D1D91-35B6-483B-BF31-66AF949CAF4D</key>
-		<dict>
-			<key>ypos</key>
-			<real>250</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
