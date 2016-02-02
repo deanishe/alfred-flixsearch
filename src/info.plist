@@ -128,7 +128,8 @@
 				<key>runningsubtext</key>
 				<string>Querying flixsearch.io…</string>
 				<key>script</key>
-				<string>/usr/bin/python flix.py search "{query}"</string>
+				<string>/usr/bin/python flix.py search "{query}"
+</string>
 				<key>subtext</key>
 				<string>What's available on Netflix and where</string>
 				<key>title</key>
@@ -213,6 +214,25 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to run trigger "config" in workflow "net.deanishe.alfred-flixsearch"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
@@ -234,38 +254,23 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>escaping</key>
-				<integer>68</integer>
-				<key>script</key>
-				<string>tell application "Alfred 2" to run trigger "config" in workflow "net.deanishe.alfred-flixsearch"</string>
-				<key>type</key>
-				<integer>6</integer>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>title</key>
+				<string>{query}</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>9739EDC2-7CD9-47A1-B574-7FDD89C64C54</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string>/usr/bin/python flix.py {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>AAB37850-BBF1-435B-B4B1-71893CC99504</string>
+			<string>97BD5395-1B42-4559-8E36-06A23C96BF77</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -307,23 +312,19 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
+				<key>concurrently</key>
 				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>output</key>
+				<key>escaping</key>
 				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>title</key>
-				<string>{query}</string>
+				<key>script</key>
+				<string>/usr/bin/python flix.py {query}</string>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>97BD5395-1B42-4559-8E36-06A23C96BF77</string>
+			<string>AAB37850-BBF1-435B-B4B1-71893CC99504</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>

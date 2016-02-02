@@ -141,7 +141,7 @@ def title_from_url(url):
     s = url.split('/')[-1]
     s = s.replace('-', ' ').title()
     if re.match(r'.+\d\d\d\d', s):
-        s = '{} ({})'.format(s[:-4].strip(), s[-4:])
+        s = '{0} ({1})'.format(s[:-4].strip(), s[-4:])
     return s
 
 
