@@ -1,6 +1,8 @@
 Flixsearch for Alfred
 =====================
 
+**Note:** This workflow is no longer supported! I quit Netflix after the VPN crackdown left me with only their woeful German library :(
+
 
 See what's available on Netflix and where via [FlixSearch.io][flixsearch].
 
